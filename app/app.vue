@@ -135,7 +135,7 @@ const offset = ref(0)
 const limit = 50
 
 // 详情模态框
-const detailModalRef = ref<{ open: () => void; close: () => void } | null>(null)
+const detailModalRef = ref<{ open: (id?: number) => void; close: () => void } | null>(null)
 const selectedPokemon = ref<Pokemon | null>(null)
 
 // 无限滚动
@@ -269,13 +269,13 @@ const toggleShowFavorites = () => {
 // 处理卡片点击
 const handleCardClick = (pokemon: Pokemon) => {
   selectedPokemon.value = pokemon
-  detailModalRef.value?.open()
+  detailModalRef.value?.open(pokemon.id)
 }
 
 // 处理详情点击
 const handleDetail = (pokemon: Pokemon) => {
   selectedPokemon.value = pokemon
-  detailModalRef.value?.open()
+  detailModalRef.value?.open(pokemon.id)
 }
 
 // 处理收藏切换

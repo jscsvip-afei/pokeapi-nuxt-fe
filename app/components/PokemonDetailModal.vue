@@ -224,21 +224,26 @@ const playCry = () => {
   }
 }
 
-// 打开模态框
-const open = async () => {
-  if (!props.pokemon) return
+// 打开模态框 - 接收 pokemon id 作为参数确保数据一致性
+const open = async (pokemonId?: number) => {
+  // 使用传入的 id 或 props 中的 id
+  const id = pokemonId ?? props.pokemon?.id
+  if (!id) return
   
-  modalRef.value?.showModal()
+  // 先重置状态，确保不显示旧数据
   loading.value = true
   error.value = null
   detail.value = null
   species.value = null
   spriteType.value = 'artwork'
+  
+  // 打开模态框
+  modalRef.value?.showModal()
 
   try {
     const [detailData, speciesData] = await Promise.all([
-      fetchPokemonDetail(props.pokemon.id),
-      fetchPokemonSpecies(props.pokemon.id)
+      fetchPokemonDetail(id),
+      fetchPokemonSpecies(id)
     ])
     detail.value = detailData
     species.value = speciesData
@@ -254,17 +259,6 @@ const open = async () => {
 const close = () => {
   modalRef.value?.close()
 }
-
-// 监听 pokemon 变化，重置状态
-watch(() => props.pokemon, (newPokemon, oldPokemon) => {
-  if (newPokemon && newPokemon.id !== oldPokemon?.id) {
-    // 重置状态，防止显示旧数据
-    detail.value = null
-    species.value = null
-    error.value = null
-    spriteType.value = 'artwork'
-  }
-})
 
 // 暴露方法
 defineExpose({ open, close })
