@@ -8,11 +8,15 @@
         class="card bg-base-100 shadow-xl"
       >
         <figure class="px-4 pt-4 bg-gradient-to-br from-primary/10 to-secondary/10">
-          <div class="skeleton w-24 h-24 rounded-full"></div>
+          <div class="skeleton w-28 h-28 rounded-full"></div>
         </figure>
         <div class="card-body items-center text-center p-4">
           <div class="skeleton h-4 w-12"></div>
           <div class="skeleton h-4 w-20 mt-2"></div>
+          <div class="flex gap-1 mt-2">
+            <div class="skeleton h-5 w-10"></div>
+            <div class="skeleton h-5 w-10"></div>
+          </div>
           <div class="skeleton h-6 w-16 mt-2"></div>
         </div>
       </div>
@@ -24,7 +28,11 @@
         v-for="pokemon in pokemons" 
         :key="pokemon.url"
         :pokemon="pokemon"
+        :is-favorite="isFavorite(pokemon.id)"
+        :types="pokemonTypes[pokemon.id] || []"
+        @click="handleClick"
         @detail="handleDetail"
+        @toggle-favorite="handleToggleFavorite"
       />
     </div>
 
@@ -37,18 +45,33 @@
 </template>
 
 <script setup lang="ts">
-import type { Pokemon } from './PokemonCard.vue'
+import type { Pokemon } from '~/types/pokemon'
 
-defineProps<{
+const props = defineProps<{
   pokemons: Pokemon[]
   loading: boolean
+  pokemonTypes?: Record<number, string[]>
 }>()
 
 const emit = defineEmits<{
+  click: [pokemon: Pokemon]
   detail: [pokemon: Pokemon]
+  toggleFavorite: [id: number]
 }>()
+
+const { isFavorite } = useFavorites()
+
+const pokemonTypes = computed(() => props.pokemonTypes || {})
+
+const handleClick = (pokemon: Pokemon) => {
+  emit('click', pokemon)
+}
 
 const handleDetail = (pokemon: Pokemon) => {
   emit('detail', pokemon)
+}
+
+const handleToggleFavorite = (id: number) => {
+  emit('toggleFavorite', id)
 }
 </script>
