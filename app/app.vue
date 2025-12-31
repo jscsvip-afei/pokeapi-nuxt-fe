@@ -44,11 +44,11 @@ const loading = ref(true)
 const fetchPokemons = async () => {
   try {
     loading.value = true
-    const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150')
-    const data = await response.json()
+    const response = await $fetch<{ results: Array<{ name: string; url: string }> }>('https://pokeapi.co/api/v2/pokemon?limit=150')
+    const data = response
     
     // 为每个宝可梦添加 id
-    const pokemonsWithId = data.results.map((pokemon: any, index: number) => ({
+    const pokemonsWithId = data.results.map((pokemon, index) => ({
       ...pokemon,
       id: index + 1
     }))

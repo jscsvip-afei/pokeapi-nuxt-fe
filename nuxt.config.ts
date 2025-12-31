@@ -6,5 +6,14 @@ export default defineNuxtConfig({
   },
   css: ["./app/tailwind.css"],
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true }
+  devtools: { enabled: true },
+  future: {
+    compatibilityVersion: 4,
+  },
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    }
+  ]
 })
