@@ -1,6 +1,9 @@
 import type { Item, ItemCategory, ItemPocket } from '~/types/item'
 import type { Move, MoveCategory, MoveDamageClass } from '~/types/move'
 import type { Region, Location, LocationArea } from '~/types/location'
+import type { Ability } from '~/types/ability'
+import type { Nature } from '~/types/nature'
+import type { Berry, BerryFirmness, BerryFlavor } from '~/types/berry'
 
 const API_BASE = 'https://pokeapi.co/api/v2'
 
@@ -10,6 +13,9 @@ export const usePokeData = () => {
   const moveCache = useState<Map<string, Move>>('move-cache', () => new Map())
   const regionCache = useState<Map<string, Region>>('region-cache', () => new Map())
   const locationCache = useState<Map<string, Location>>('location-cache', () => new Map())
+  const abilityCache = useState<Map<string, Ability>>('ability-cache', () => new Map())
+  const natureCache = useState<Map<string, Nature>>('nature-cache', () => new Map())
+  const berryCache = useState<Map<string, Berry>>('berry-cache', () => new Map())
 
   // ========== 道具相关 ==========
   
@@ -182,6 +188,101 @@ export const usePokeData = () => {
     return parseInt(url.split('/').filter(Boolean).pop() || '0')
   }
 
+  // ========== 特性相关 (扩展) ==========
+
+  // 获取特性列表（带分页）
+  const fetchAbilitiesList = async (limit: number = 20, offset: number = 0) => {
+    const data = await $fetch<{ results: Array<{ name: string; url: string }>; count: number }>(
+      `${API_BASE}/ability?limit=${limit}&offset=${offset}`
+    )
+    return { abilities: data.results, total: data.count }
+  }
+
+  // 获取特性详情（带缓存）
+  const fetchAbilityDetail = async (nameOrId: string | number): Promise<Ability> => {
+    const key = String(nameOrId)
+    if (abilityCache.value.has(key)) {
+      return abilityCache.value.get(key)!
+    }
+    const data = await $fetch<Ability>(`${API_BASE}/ability/${nameOrId}`)
+    abilityCache.value.set(key, data)
+    abilityCache.value.set(String(data.id), data)
+    return data
+  }
+
+  // ========== 性格相关 (扩展) ==========
+
+  // 获取性格列表
+  const fetchNaturesList = async () => {
+    const data = await $fetch<{ results: Array<{ name: string; url: string }> }>(
+      `${API_BASE}/nature`
+    )
+    return data.results
+  }
+
+  // 获取性格详情（带缓存）
+  const fetchNatureDetail = async (name: string): Promise<Nature> => {
+    if (natureCache.value.has(name)) {
+      return natureCache.value.get(name)!
+    }
+    const data = await $fetch<Nature>(`${API_BASE}/nature/${name}`)
+    natureCache.value.set(name, data)
+    return data
+  }
+
+  // ========== 树果相关 ==========
+
+  // 获取树果列表
+  const fetchBerries = async (limit: number = 20, offset: number = 0) => {
+    const data = await $fetch<{ results: Array<{ name: string; url: string }>; count: number }>(
+      `${API_BASE}/berry?limit=${limit}&offset=${offset}`
+    )
+    return { berries: data.results, total: data.count }
+  }
+
+  // 获取树果详情
+  const fetchBerry = async (nameOrId: string | number): Promise<Berry> => {
+    const key = String(nameOrId)
+    if (berryCache.value.has(key)) {
+      return berryCache.value.get(key)!
+    }
+    const data = await $fetch<Berry>(`${API_BASE}/berry/${nameOrId}`)
+    berryCache.value.set(key, data)
+    berryCache.value.set(String(data.id), data)
+    return data
+  }
+
+  // 获取树果硬度列表
+  const fetchBerryFirmnesses = async () => {
+    const data = await $fetch<{ results: Array<{ name: string; url: string }> }>(
+      `${API_BASE}/berry-firmness`
+    )
+    return data.results
+  }
+
+  // 获取树果口味列表
+  const fetchBerryFlavors = async () => {
+    const data = await $fetch<{ results: Array<{ name: string; url: string }> }>(
+      `${API_BASE}/berry-flavor`
+    )
+    return data.results
+  }
+
+  // 获取树果图片 (通过 item 获取)
+  const getBerrySprite = (itemName: string): string => {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${itemName}.png`
+  }
+
+  // ========== 世代相关 ==========
+
+  // 获取世代列表
+  const fetchGenerations = async () => {
+    const data = await $fetch<{ results: Array<{ name: string; url: string }> }>(
+      `${API_BASE}/generation`
+    )
+    return data.results
+  }
+
   return {
     // 道具
     fetchItems,
@@ -201,12 +302,25 @@ export const usePokeData = () => {
     fetchLocations,
     fetchLocation,
     fetchLocationArea,
-    // 其他
+    // 特性
     fetchAbilities,
     fetchAbility,
+    fetchAbilitiesList,
+    fetchAbilityDetail,
+    // 性格
     fetchNatures,
     fetchNature,
+    fetchNaturesList,
+    fetchNatureDetail,
+    // 树果
+    fetchBerries,
+    fetchBerry,
+    fetchBerryFirmnesses,
+    fetchBerryFlavors,
+    getBerrySprite,
+    // 其他
     fetchEggGroups,
+    fetchGenerations,
     // 工具
     getIdFromUrl
   }
