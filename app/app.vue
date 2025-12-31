@@ -1,22 +1,12 @@
 <template>
   <div class="min-h-screen bg-base-200">
     <!-- 导航栏 -->
-    <div class="navbar bg-base-100 shadow-lg sticky top-0 z-50">
-      <div class="flex-1">
-        <a class="btn btn-ghost text-xl">🔴 宝可梦图鉴</a>
-      </div>
-      <div class="flex-none gap-2">
-        <div class="form-control">
-          <input 
-            type="text" 
-            placeholder="搜索宝可梦..." 
-            class="input input-bordered w-24 md:w-auto" 
-            v-model="searchText"
-            @input="onSearchChange"
-          />
-        </div>
-      </div>
-    </div>
+    <Navbar>
+      <SearchInput 
+        v-model="searchText" 
+        placeholder="搜索宝可梦..."
+      />
+    </Navbar>
 
     <!-- 主内容区 -->
     <div class="container mx-auto px-4 py-8">
@@ -27,57 +17,26 @@
         <div class="badge badge-secondary mt-2">共 {{ filteredPokemons.length }} 只宝可梦</div>
       </div>
 
-      <!-- 加载状态 -->
-      <div v-if="loading" class="flex justify-center items-center py-20">
-        <span class="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-
-      <!-- 宝可梦卡片网格 -->
-      <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <div 
-          v-for="pokemon in filteredPokemons" 
-          :key="pokemon.url"
-          class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
-        >
-          <figure class="px-4 pt-4 bg-gradient-to-br from-primary/10 to-secondary/10">
-            <img 
-              :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`" 
-              :alt="pokemon.name"
-              class="w-24 h-24 object-contain"
-            />
-          </figure>
-          <div class="card-body items-center text-center p-4">
-            <span class="badge badge-outline badge-sm">#{{ pokemon.id }}</span>
-            <h2 class="card-title text-sm capitalize">{{ pokemon.name }}</h2>
-            <div class="card-actions">
-              <button class="btn btn-primary btn-xs">详情</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 空状态 -->
-      <div v-if="!loading && filteredPokemons.length === 0" class="text-center py-20">
-        <div class="text-6xl mb-4">😢</div>
-        <p class="text-xl text-base-content/70">没有找到匹配的宝可梦</p>
-      </div>
+      <!-- 宝可梦列表 -->
+      <PokemonList 
+        :pokemons="filteredPokemons" 
+        :loading="loading"
+        @detail="handleDetail"
+      />
     </div>
 
     <!-- 页脚 -->
-    <footer class="footer footer-center p-4 bg-base-300 text-base-content">
-      <aside>
-        <p>数据来源于 <a href="https://pokeapi.co/" class="link link-primary" target="_blank">PokéAPI</a></p>
-      </aside>
-    </footer>
+    <AppFooter />
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
+<script setup lang="ts">
+import { ref, onMounted, watch } from 'vue'
+import type { Pokemon } from './components/PokemonCard.vue'
 
 // 状态
-const pokemons = ref([])
-const filteredPokemons = ref([])
+const pokemons = ref<Pokemon[]>([])
+const filteredPokemons = ref<Pokemon[]>([])
 const searchText = ref('')
 const loading = ref(true)
 
@@ -89,7 +48,7 @@ const fetchPokemons = async () => {
     const data = await response.json()
     
     // 为每个宝可梦添加 id
-    const pokemonsWithId = data.results.map((pokemon, index) => ({
+    const pokemonsWithId = data.results.map((pokemon: any, index: number) => ({
       ...pokemon,
       id: index + 1
     }))
@@ -103,12 +62,18 @@ const fetchPokemons = async () => {
   }
 }
 
-// 搜索过滤
-const onSearchChange = () => {
-  const searchValue = searchText.value.toLowerCase()
+// 监听搜索文本变化进行过滤
+watch(searchText, (newValue) => {
+  const searchValue = newValue.toLowerCase()
   filteredPokemons.value = pokemons.value.filter(pokemon => 
     pokemon.name.toLowerCase().includes(searchValue)
   )
+})
+
+// 处理详情点击
+const handleDetail = (pokemon: Pokemon) => {
+  console.log('查看详情:', pokemon)
+  // 后续可以跳转到详情页或打开模态框
 }
 
 // 组件挂载时获取数据
