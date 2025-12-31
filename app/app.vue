@@ -1,90 +1,118 @@
 <template>
-  <div class="bg-white">
-    <header class="absolute inset-x-0 top-0 z-50">
-      <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-        <div class="flex lg:flex-1">
-          <a href="#" class="-m-1.5 p-1.5">
-            <span class="sr-only">Your Company</span>
-            <!-- <img class="h-8 w-auto" src="/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="" /> -->
-          </a>
-        </div>
-        <div class="flex lg:hidden">
-          <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = true">
-            <span class="sr-only">Open main menu</span>
-            <Bars3Icon class="size-6" aria-hidden="true" />
-          </button>
-        </div>
-        <div class="hidden lg:flex lg:gap-x-12">
-          <a v-for="item in navigation" :key="item.name" :href="item.href" class="text-sm/6 font-semibold text-gray-900">{{ item.name }}</a>
-        </div>
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
-        </div>
-      </nav>
-      <Dialog class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
-        <div class="fixed inset-0 z-50"></div>
-        <DialogPanel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-          <div class="flex items-center justify-between">
-            <a href="#" class="-m-1.5 p-1.5">
-              <span class="sr-only">Your Company</span>
-              <!-- <img class="h-8 w-auto" src="/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="" /> -->
-            </a>
-            <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
-              <span class="sr-only">Close menu</span>
-              <XMarkIcon class="size-6" aria-hidden="true" />
-            </button>
-          </div>
-          <div class="mt-6 flow-root">
-            <div class="-my-6 divide-y divide-gray-500/10">
-              <div class="space-y-2 py-6">
-                <a v-for="item in navigation" :key="item.name" :href="item.href" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">{{ item.name }}</a>
-              </div>
-              <div class="py-6">
-                <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Log in</a>
-              </div>
-            </div>
-          </div>
-        </DialogPanel>
-      </Dialog>
-    </header>
-
-    <div class="relative isolate px-6 pt-14 lg:px-8">
-      <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-        <div class="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+  <div class="min-h-screen bg-base-200">
+    <!-- 导航栏 -->
+    <div class="navbar bg-base-100 shadow-lg sticky top-0 z-50">
+      <div class="flex-1">
+        <a class="btn btn-ghost text-xl">🔴 宝可梦图鉴</a>
       </div>
-      <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-        <div class="hidden sm:mb-8 sm:flex sm:justify-center">
-          <div class="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-            Announcing our next round of funding. <a href="#" class="font-semibold text-indigo-600"><span class="absolute inset-0" aria-hidden="true"></span>Read more <span aria-hidden="true">&rarr;</span></a>
-          </div>
+      <div class="flex-none gap-2">
+        <div class="form-control">
+          <input 
+            type="text" 
+            placeholder="搜索宝可梦..." 
+            class="input input-bordered w-24 md:w-auto" 
+            v-model="searchText"
+            @input="onSearchChange"
+          />
         </div>
-        <div class="text-center">
-          <h1 class="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">Data to enrich your online business</h1>
-          <p class="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.</p>
-          <div class="mt-10 flex items-center justify-center gap-x-6">
-            <a href="#" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get started</a>
-            <a href="#" class="text-sm/6 font-semibold text-gray-900">Learn more <span aria-hidden="true">→</span></a>
-          </div>
-        </div>
-      </div>
-      <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
-        <div class="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
       </div>
     </div>
+
+    <!-- 主内容区 -->
+    <div class="container mx-auto px-4 py-8">
+      <!-- 标题区 -->
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-primary mb-2">宝可梦列表</h1>
+        <p class="text-base-content/70">探索神奇的宝可梦世界</p>
+        <div class="badge badge-secondary mt-2">共 {{ filteredPokemons.length }} 只宝可梦</div>
+      </div>
+
+      <!-- 加载状态 -->
+      <div v-if="loading" class="flex justify-center items-center py-20">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+
+      <!-- 宝可梦卡片网格 -->
+      <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div 
+          v-for="pokemon in filteredPokemons" 
+          :key="pokemon.url"
+          class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+        >
+          <figure class="px-4 pt-4 bg-gradient-to-br from-primary/10 to-secondary/10">
+            <img 
+              :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`" 
+              :alt="pokemon.name"
+              class="w-24 h-24 object-contain"
+            />
+          </figure>
+          <div class="card-body items-center text-center p-4">
+            <span class="badge badge-outline badge-sm">#{{ pokemon.id }}</span>
+            <h2 class="card-title text-sm capitalize">{{ pokemon.name }}</h2>
+            <div class="card-actions">
+              <button class="btn btn-primary btn-xs">详情</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 空状态 -->
+      <div v-if="!loading && filteredPokemons.length === 0" class="text-center py-20">
+        <div class="text-6xl mb-4">😢</div>
+        <p class="text-xl text-base-content/70">没有找到匹配的宝可梦</p>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer footer-center p-4 bg-base-300 text-base-content">
+      <aside>
+        <p>数据来源于 <a href="https://pokeapi.co/" class="link link-primary" target="_blank">PokéAPI</a></p>
+      </aside>
+    </footer>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { Dialog, DialogPanel } from '@headlessui/vue'
-import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { ref, onMounted } from 'vue'
 
-const navigation = [
-  { name: 'Product', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
-]
+// 状态
+const pokemons = ref([])
+const filteredPokemons = ref([])
+const searchText = ref('')
+const loading = ref(true)
 
-const mobileMenuOpen = ref(false)
+// 获取宝可梦数据
+const fetchPokemons = async () => {
+  try {
+    loading.value = true
+    const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150')
+    const data = await response.json()
+    
+    // 为每个宝可梦添加 id
+    const pokemonsWithId = data.results.map((pokemon, index) => ({
+      ...pokemon,
+      id: index + 1
+    }))
+    
+    pokemons.value = pokemonsWithId
+    filteredPokemons.value = pokemonsWithId
+  } catch (error) {
+    console.error('获取宝可梦数据失败:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+// 搜索过滤
+const onSearchChange = () => {
+  const searchValue = searchText.value.toLowerCase()
+  filteredPokemons.value = pokemons.value.filter(pokemon => 
+    pokemon.name.toLowerCase().includes(searchValue)
+  )
+}
+
+// 组件挂载时获取数据
+onMounted(() => {
+  fetchPokemons()
+})
 </script>
