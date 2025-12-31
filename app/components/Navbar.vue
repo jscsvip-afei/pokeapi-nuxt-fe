@@ -3,10 +3,10 @@
     <div class="flex-1">
       <NuxtLink to="/" class="btn btn-ghost text-xl gap-2">
         <span class="text-2xl">🔴</span>
-        <span class="hidden sm:inline">宝可梦图鉴</span>
+        <span class="hidden sm:inline">{{ t.home.title }}</span>
       </NuxtLink>
     </div>
-    <div class="flex-none gap-2">
+    <div class="flex-none gap-1">
       <!-- 页面导航 -->
       <ul class="menu menu-horizontal px-1 hidden xl:flex">
         <li>
@@ -15,7 +15,7 @@
             class="btn btn-ghost btn-sm"
             :class="{ 'btn-active': route.path === '/' }"
           >
-            📖 图鉴
+            📖 {{ t.nav.pokedex }}
           </NuxtLink>
         </li>
         <li>
@@ -24,7 +24,7 @@
             class="btn btn-ghost btn-sm"
             :class="{ 'btn-active': route.path === '/evolution' }"
           >
-            🔄 进化
+            🔄 {{ t.nav.evolution }}
           </NuxtLink>
         </li>
         <li>
@@ -33,7 +33,7 @@
             class="btn btn-ghost btn-sm"
             :class="{ 'btn-active': route.path === '/moves' }"
           >
-            ⚔️ 招式
+            ⚔️ {{ t.nav.moves }}
           </NuxtLink>
         </li>
         <li>
@@ -42,7 +42,7 @@
             class="btn btn-ghost btn-sm"
             :class="{ 'btn-active': route.path === '/items' }"
           >
-            🎒 道具
+            🎒 {{ t.nav.items }}
           </NuxtLink>
         </li>
         <li>
@@ -51,7 +51,7 @@
             class="btn btn-ghost btn-sm"
             :class="{ 'btn-active': route.path === '/abilities' }"
           >
-            ✨ 特性
+            ✨ {{ t.nav.abilities }}
           </NuxtLink>
         </li>
         <li>
@@ -60,7 +60,7 @@
             class="btn btn-ghost btn-sm"
             :class="{ 'btn-active': route.path === '/natures' }"
           >
-            🎭 性格
+            🎭 {{ t.nav.natures }}
           </NuxtLink>
         </li>
         <li>
@@ -69,7 +69,7 @@
             class="btn btn-ghost btn-sm"
             :class="{ 'btn-active': route.path === '/berries' }"
           >
-            🍇 树果
+            🍇 {{ t.nav.berries }}
           </NuxtLink>
         </li>
         <li>
@@ -78,10 +78,16 @@
             class="btn btn-ghost btn-sm"
             :class="{ 'btn-active': route.path === '/regions' }"
           >
-            🗺️ 地区
+            🗺️ {{ t.nav.regions }}
           </NuxtLink>
         </li>
       </ul>
+      
+      <!-- 主题切换 -->
+      <ThemeSwitcher />
+      
+      <!-- 语言切换 -->
+      <LanguageSwitcher />
       
       <!-- 移动端下拉菜单 -->
       <div class="dropdown dropdown-end xl:hidden">
@@ -90,15 +96,15 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
           </svg>
         </div>
-        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-          <li><NuxtLink to="/">📖 图鉴</NuxtLink></li>
-          <li><NuxtLink to="/evolution">🔄 进化链</NuxtLink></li>
-          <li><NuxtLink to="/moves">⚔️ 招式</NuxtLink></li>
-          <li><NuxtLink to="/items">🎒 道具</NuxtLink></li>
-          <li><NuxtLink to="/abilities">✨ 特性</NuxtLink></li>
-          <li><NuxtLink to="/natures">🎭 性格</NuxtLink></li>
-          <li><NuxtLink to="/berries">🍇 树果</NuxtLink></li>
-          <li><NuxtLink to="/regions">🗺️ 地区</NuxtLink></li>
+        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow bg-base-100 rounded-box w-52">
+          <li><NuxtLink to="/">📖 {{ t.nav.pokedex }}</NuxtLink></li>
+          <li><NuxtLink to="/evolution">🔄 {{ t.nav.evolution }}</NuxtLink></li>
+          <li><NuxtLink to="/moves">⚔️ {{ t.nav.moves }}</NuxtLink></li>
+          <li><NuxtLink to="/items">🎒 {{ t.nav.items }}</NuxtLink></li>
+          <li><NuxtLink to="/abilities">✨ {{ t.nav.abilities }}</NuxtLink></li>
+          <li><NuxtLink to="/natures">🎭 {{ t.nav.natures }}</NuxtLink></li>
+          <li><NuxtLink to="/berries">🍇 {{ t.nav.berries }}</NuxtLink></li>
+          <li><NuxtLink to="/regions">🗺️ {{ t.nav.regions }}</NuxtLink></li>
         </ul>
       </div>
       
@@ -108,5 +114,8 @@
 </template>
 
 <script setup lang="ts">
+import { useSettings } from '~/composables/useSettings'
+
 const route = useRoute()
+const { t } = useSettings()
 </script>

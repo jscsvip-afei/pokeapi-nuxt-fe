@@ -10,22 +10,22 @@
         <div class="hero-content text-center py-8">
           <div>
             <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              宝可梦图鉴
+              {{ t.home.title }}
             </h1>
             <p class="py-4 text-base-content/70 max-w-md mx-auto">
-              探索神奇的宝可梦世界，查看详细属性和能力
+              {{ t.home.subtitle }}
             </p>
             <div class="stats shadow">
               <div class="stat place-items-center">
-                <div class="stat-title">总数</div>
+                <div class="stat-title">{{ t.common.total }}</div>
                 <div class="stat-value text-primary">{{ total }}</div>
               </div>
               <div class="stat place-items-center">
-                <div class="stat-title">已加载</div>
+                <div class="stat-title">{{ t.common.loaded }}</div>
                 <div class="stat-value text-secondary">{{ allPokemons.length }}</div>
               </div>
               <div class="stat place-items-center">
-                <div class="stat-title">收藏</div>
+                <div class="stat-title">{{ t.common.favorites }}</div>
                 <div class="stat-value text-error">{{ favoritesCount }}</div>
               </div>
             </div>
@@ -50,7 +50,7 @@
         <div class="flex flex-col sm:flex-row gap-4">
           <SearchInput 
             v-model="searchText" 
-            placeholder="搜索宝可梦名称..."
+            :placeholder="t.home.searchPlaceholder"
             class="flex-1"
           />
           <select 
@@ -58,13 +58,13 @@
             class="select select-bordered w-full sm:w-48"
             @change="(e: Event) => handleTypeSelect((e.target as HTMLSelectElement).value)"
           >
-            <option value="">全部类型</option>
+            <option value="">{{ t.home.allTypes }}</option>
             <option 
-              v-for="t in types" 
-              :key="t.name" 
-              :value="t.name"
+              v-for="tp in types" 
+              :key="tp.name" 
+              :value="tp.name"
             >
-              {{ TYPE_NAMES_ZH[t.name] || t.name }}
+              {{ TYPE_NAMES_ZH[tp.name] || tp.name }}
             </option>
           </select>
         </div>
@@ -72,20 +72,20 @@
 
       <!-- 搜索结果提示 -->
       <div v-if="searchText || selectedType || showFavorites" class="mb-4 flex items-center gap-2 flex-wrap">
-        <span class="text-base-content/60">筛选结果:</span>
+        <span class="text-base-content/60">{{ t.home.filterResults }}:</span>
         <span v-if="searchText" class="badge badge-lg gap-1">
-          搜索: {{ searchText }}
+          {{ t.home.searchLabel }}: {{ searchText }}
           <button class="btn btn-ghost btn-xs" @click="searchText = ''">✕</button>
         </span>
         <span v-if="selectedType" class="badge badge-lg gap-1" :style="{ backgroundColor: TYPE_COLORS[selectedType], color: 'white' }">
-          类型: {{ TYPE_NAMES_ZH[selectedType] }}
+          {{ t.home.typeLabel }}: {{ TYPE_NAMES_ZH[selectedType] }}
           <button class="btn btn-ghost btn-xs text-white" @click="selectedType = ''">✕</button>
         </span>
         <span v-if="showFavorites" class="badge badge-lg badge-error gap-1">
-          仅收藏
+          {{ t.home.onlyFavorites }}
           <button class="btn btn-ghost btn-xs" @click="showFavorites = false">✕</button>
         </span>
-        <span class="text-base-content/60 ml-auto">共 {{ displayPokemons.length }} 只</span>
+        <span class="text-base-content/60 ml-auto">{{ displayPokemons.length }} Pokémon</span>
       </div>
 
       <!-- 宝可梦列表 -->
@@ -116,7 +116,7 @@
         class="text-center py-8"
       >
         <p class="text-sm text-base-content/60">
-          ✨ 已加载全部 {{ allPokemons.length }} 只宝可梦
+          ✨ {{ allPokemons.length }} Pokémon loaded
         </p>
       </div>
     </div>
@@ -137,9 +137,11 @@
 <script setup lang="ts">
 import type { Pokemon, PokemonDetail } from '~/types/pokemon'
 import { TYPE_COLORS, TYPE_NAMES_ZH } from '~/types/pokemon'
+import { useSettings } from '~/composables/useSettings'
 
 const { fetchPokemonList, fetchTypes, fetchPokemonsByType, fetchPokemonDetail } = usePokemon()
 const { isFavorite, toggleFavorite, getFavorites } = useFavorites()
+const { t } = useSettings()
 
 // 状态
 const allPokemons = ref<Pokemon[]>([])
@@ -311,7 +313,7 @@ onMounted(() => {
   observer = new IntersectionObserver(
     (entries) => {
       const entry = entries[0]
-      if (entry.isIntersecting && !loadingMore.value && !loading.value) {
+      if (entry && entry.isIntersecting && !loadingMore.value && !loading.value) {
         loadMore()
       }
     },
