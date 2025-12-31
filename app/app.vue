@@ -81,12 +81,22 @@
       <!-- 无限滚动触发器 -->
       <div 
         ref="loadMoreTrigger"
-        v-if="!loading && !selectedType && !showFavorites && allPokemons.length < total" 
+        v-if="!loading && !selectedType && !showFavorites && hasMore" 
         class="text-center py-8"
       >
-        <span v-if="loadingMore" class="loading loading-spinner loading-lg text-primary"></span>
+        <span class="loading loading-spinner loading-lg text-primary"></span>
         <p class="text-sm text-base-content/60 mt-2">
-          已加载 {{ allPokemons.length }} / {{ total }}
+          滚动加载更多... ({{ allPokemons.length }} / {{ total }})
+        </p>
+      </div>
+
+      <!-- 已加载全部 -->
+      <div 
+        v-if="!loading && !selectedType && !showFavorites && !hasMore && allPokemons.length > 0" 
+        class="text-center py-8"
+      >
+        <p class="text-sm text-base-content/60">
+          ✨ 已加载全部 {{ allPokemons.length }} 只宝可梦
         </p>
       </div>
     </div>
@@ -138,6 +148,9 @@ const pokemonTypesMap = ref<Record<number, string[]>>({})
 // 计算收藏数量
 const favoritesCount = computed(() => getFavorites().length)
 
+// 是否还有更多数据
+const hasMore = computed(() => allPokemons.value.length < total.value)
+
 // 计算展示的宝可梦列表
 const displayPokemons = computed(() => {
   let result: Pokemon[] = []
@@ -179,7 +192,7 @@ const init = async () => {
     ])
     
     allPokemons.value = listData.pokemons
-    total.value = listData.count
+    total.value = listData.total
     offset.value = limit
     types.value = typesData
 
