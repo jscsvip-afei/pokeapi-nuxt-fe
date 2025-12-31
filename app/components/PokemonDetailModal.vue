@@ -54,9 +54,10 @@
             </div>
 
             <img 
+              :key="`${detail.id}-${spriteType}`"
               :src="getSpriteUrl(detail.id, spriteType)" 
               :alt="detail.name"
-              class="w-48 h-48 object-contain mx-auto drop-shadow-xl"
+              class="w-48 h-48 object-contain mx-auto drop-shadow-xl transition-opacity duration-200"
             />
 
             <!-- 播放叫声 -->
@@ -253,6 +254,17 @@ const open = async () => {
 const close = () => {
   modalRef.value?.close()
 }
+
+// 监听 pokemon 变化，重置状态
+watch(() => props.pokemon, (newPokemon, oldPokemon) => {
+  if (newPokemon && newPokemon.id !== oldPokemon?.id) {
+    // 重置状态，防止显示旧数据
+    detail.value = null
+    species.value = null
+    error.value = null
+    spriteType.value = 'artwork'
+  }
+})
 
 // 暴露方法
 defineExpose({ open, close })

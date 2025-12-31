@@ -78,16 +78,13 @@
         @toggle-favorite="handleToggleFavorite"
       />
 
-      <!-- 加载更多按钮 -->
-      <div v-if="!loading && !selectedType && !showFavorites && allPokemons.length < total" class="text-center mt-8">
-        <button 
-          class="btn btn-primary btn-wide"
-          :class="{ 'loading': loadingMore }"
-          :disabled="loadingMore"
-          @click="loadMore"
-        >
-          {{ loadingMore ? '加载中...' : '加载更多' }}
-        </button>
+      <!-- 无限滚动触发器 -->
+      <div 
+        ref="loadMoreTrigger"
+        v-if="!loading && !selectedType && !showFavorites && allPokemons.length < total" 
+        class="text-center py-8"
+      >
+        <span v-if="loadingMore" class="loading loading-spinner loading-lg text-primary"></span>
         <p class="text-sm text-base-content/60 mt-2">
           已加载 {{ allPokemons.length }} / {{ total }}
         </p>
@@ -130,6 +127,10 @@ const limit = 50
 // 详情模态框
 const detailModalRef = ref<{ open: () => void; close: () => void } | null>(null)
 const selectedPokemon = ref<Pokemon | null>(null)
+
+// 无限滚动
+const loadMoreTrigger = ref<HTMLElement | null>(null)
+let observer: IntersectionObserver | null = null
 
 // 宝可梦类型映射（缓存）
 const pokemonTypesMap = ref<Record<number, string[]>>({})
@@ -272,5 +273,37 @@ const handleToggleFavorite = (id: number) => {
 // 组件挂载时初始化
 onMounted(() => {
   init()
+  
+  // 设置无限滚动观察器
+  observer = new IntersectionObserver(
+    (entries) => {
+      const entry = entries[0]
+      if (entry.isIntersecting && !loadingMore.value && !loading.value) {
+        loadMore()
+      }
+    },
+    {
+      rootMargin: '100px', // 提前 100px 触发
+      threshold: 0.1
+    }
+  )
+})
+
+// 监听触发器元素
+watch(loadMoreTrigger, (newEl, oldEl) => {
+  if (oldEl && observer) {
+    observer.unobserve(oldEl)
+  }
+  if (newEl && observer) {
+    observer.observe(newEl)
+  }
+})
+
+// 组件卸载时清理
+onUnmounted(() => {
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
 })
 </script>
