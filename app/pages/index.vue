@@ -1,12 +1,7 @@
 <template>
   <div class="min-h-screen bg-base-200">
     <!-- 导航栏 -->
-    <Navbar>
-      <SearchInput 
-        v-model="searchText" 
-        placeholder="搜索宝可梦..."
-      />
-    </Navbar>
+    <Navbar />
 
     <!-- 主内容区 -->
     <div class="container mx-auto px-4 py-8">
@@ -48,6 +43,31 @@
           @select="handleTypeSelect"
           @toggle-favorites="toggleShowFavorites"
         />
+      </div>
+
+      <!-- 搜索和筛选 -->
+      <div class="mb-6 p-4 bg-base-100 rounded-box shadow">
+        <div class="flex flex-col sm:flex-row gap-4">
+          <SearchInput 
+            v-model="searchText" 
+            placeholder="搜索宝可梦名称..."
+            class="flex-1"
+          />
+          <select 
+            :value="selectedType"
+            class="select select-bordered w-full sm:w-48"
+            @change="(e: Event) => handleTypeSelect((e.target as HTMLSelectElement).value)"
+          >
+            <option value="">全部类型</option>
+            <option 
+              v-for="t in types" 
+              :key="t.name" 
+              :value="t.name"
+            >
+              {{ TYPE_NAMES_ZH[t.name] || t.name }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <!-- 搜索结果提示 -->
