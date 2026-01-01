@@ -82,7 +82,7 @@
           </NuxtLink>
         </li>
         <!-- 主题切换 -->
-        <li>
+        <li class="dropdown dropdown-end">
           <ThemeSwitcher />
         </li>
         <!-- 语言切换 -->

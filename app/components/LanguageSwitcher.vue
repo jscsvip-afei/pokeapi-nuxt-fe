@@ -1,10 +1,10 @@
 <template>
   <button 
-    class="btn btn-ghost btn-sm gap-1"
+    class="btn btn-ghost btn-sm gap-1 px-2 font-normal h-8 min-h-8"
     @click="toggleLanguage"
   >
-    <span class="text-lg">🌐</span>
-    <span class="font-medium">{{ language === 'zh' ? '中' : 'EN' }}</span>
+    <span class="text-base leading-none">🌐</span>
+    <span class="leading-none">{{ language === 'zh' ? '中' : 'EN' }}</span>
   </button>
 </template>
 
