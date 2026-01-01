@@ -1,6 +1,7 @@
 <template>
-  <div class="container mx-auto px-4 py-6">
+  <div class="min-h-screen bg-base-200">
     <Navbar />
+    <div class="container mx-auto px-4 py-8">
 
     <!-- 页面标题 -->
     <div class="hero bg-base-100 rounded-box mb-6 shadow-lg">
@@ -210,6 +211,7 @@
       </form>
     </dialog>
 
+    </div>
     <AppFooter />
   </div>
 </template>

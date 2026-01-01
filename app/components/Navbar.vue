@@ -81,13 +81,15 @@
             🗺️ {{ t.nav.regions }}
           </NuxtLink>
         </li>
+        <!-- 主题切换 -->
+        <li>
+          <ThemeSwitcher />
+        </li>
+        <!-- 语言切换 -->
+        <li>
+          <LanguageSwitcher />
+        </li>
       </ul>
-      
-      <!-- 主题切换 -->
-      <ThemeSwitcher />
-      
-      <!-- 语言切换 -->
-      <LanguageSwitcher />
       
       <!-- 移动端下拉菜单 -->
       <div class="dropdown dropdown-end xl:hidden">
@@ -105,6 +107,8 @@
           <li><NuxtLink to="/natures">🎭 {{ t.nav.natures }}</NuxtLink></li>
           <li><NuxtLink to="/berries">🍇 {{ t.nav.berries }}</NuxtLink></li>
           <li><NuxtLink to="/regions">🗺️ {{ t.nav.regions }}</NuxtLink></li>
+          <li class="mt-2 border-t border-base-200 pt-2"><ThemeSwitcher /></li>
+          <li><LanguageSwitcher /></li>
         </ul>
       </div>
       

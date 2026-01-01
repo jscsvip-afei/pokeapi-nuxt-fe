@@ -1,19 +1,34 @@
 <template>
-  <div class="container mx-auto px-4 py-6">
+  <div class="min-h-screen bg-base-200">
     <Navbar />
 
-    <!-- 页面标题 -->
-    <div class="text-center mb-6">
-      <h1 class="text-3xl font-bold mb-2">🗺️ 地区探索</h1>
-      <p class="text-base-content/60">探索宝可梦世界的各个地区</p>
-    </div>
+    <div class="container mx-auto px-4 py-8">
+      <!-- 页面标题 -->
+      <div class="hero bg-base-100 rounded-box mb-8 shadow-lg">
+        <div class="hero-content text-center py-8">
+          <div>
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
+              🗺️ 地区探索
+            </h1>
+            <p class="py-4 text-base-content/70 max-w-md mx-auto">
+              探索宝可梦世界的各个地区
+            </p>
+            <div class="stats shadow">
+              <div class="stat place-items-center">
+                <div class="stat-title">地区总数</div>
+                <div class="stat-value text-primary">{{ regions.length }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <!-- 地区卡片网格 -->
-    <div v-if="loading" class="flex justify-center items-center min-h-[400px]">
-      <span class="loading loading-spinner loading-lg text-primary"></span>
-    </div>
+      <!-- 地区卡片网格 -->
+      <div v-if="loading" class="flex justify-center items-center min-h-[400px]">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
 
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div 
         v-for="region in regions" 
         :key="region.name"
@@ -196,6 +211,7 @@
       </form>
     </dialog>
 
+    </div>
     <AppFooter />
   </div>
 </template>
