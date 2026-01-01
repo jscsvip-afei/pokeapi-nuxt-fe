@@ -9,7 +9,7 @@
   </div>
   
   <!-- 主题列表 -->
-  <ul tabindex="0" class="dropdown-content z-[100] menu p-2 shadow-lg bg-base-200 rounded-box w-52 max-h-96 overflow-y-auto flex-nowrap mt-4">
+  <ul tabindex="0" class="dropdown-content z-[100] menu p-2 shadow-lg bg-base-200 rounded-box w-52 max-h-96 overflow-y-auto flex-nowrap">
     <li class="menu-title">
       <span>{{ t.theme.title }}</span>
     </li>
