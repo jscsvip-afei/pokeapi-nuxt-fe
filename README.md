@@ -1,10 +1,51 @@
-# Nuxt Minimal Starter
+# PokeAPI Nuxt Frontend
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+这是一个基于 [Nuxt 4](https://nuxt.com) 构建的现代化宝可梦百科全书应用。它利用 [PokeAPI](https://pokeapi.co/) 提供关于宝可梦、招式、道具等的详细信息。
 
-## Setup
+## ✨ 功能特性
 
-Make sure to install dependencies:
+本系统包含以下核心功能：
+
+*   **📖 宝可梦图鉴 (Pokedex)**
+    *   浏览完整的宝可梦列表。
+    *   支持按名称搜索和按属性（Type）筛选。
+    *   查看宝可梦详细信息：基础数值、属性、特性、进化链等。
+    *   收藏功能：标记你喜欢的宝可梦。
+    *   统计面板：显示总数、已加载数量和收藏数量。
+
+*   **🔄 进化链 (Evolution)**
+    *   探索宝可梦的进化路径和条件。
+
+*   **⚔️ 招式 (Moves)**
+    *   查询宝可梦招式的详细数据（威力、命中率、PP等）。
+
+*   **🎒 道具 (Items)**
+    *   浏览游戏中的各种道具及其用途。
+
+*   **✨ 其他数据查询**
+    *   **特性 (Abilities)**: 查看宝可梦特性的详细说明。
+    *   **树果 (Berries)**: 树果相关信息。
+    *   **性格 (Natures)**: 宝可梦性格对数值的影响。
+    *   **地区 (Regions)**: 宝可梦世界的地区和地点信息。
+
+*   **🎨 用户体验**
+    *   **多语言支持**: 支持中英文切换。
+    *   **主题切换**: 支持明亮/暗黑模式。
+    *   **响应式设计**: 完美适配桌面和移动端设备，基于 Tailwind CSS 4 和 DaisyUI 5。
+
+## 🛠️ 技术栈
+
+*   **框架**: [Nuxt 4](https://nuxt.com/) (Vue 3)
+*   **样式**: [Tailwind CSS 4](https://tailwindcss.com/)
+*   **UI 组件库**: [DaisyUI 5](https://daisyui.com/)
+*   **图标**: [Heroicons](https://heroicons.com/)
+*   **API**: [PokeAPI](https://pokeapi.co/)
+
+## 🚀 快速开始
+
+查看 [Nuxt 文档](https://nuxt.com/docs/getting-started/introduction) 了解更多。
+
+### 安装依赖
 
 ```bash
 # npm
@@ -20,9 +61,9 @@ yarn install
 bun install
 ```
 
-## Development Server
+### 启动开发服务器
 
-Start the development server on `http://localhost:3000`:
+在 `http://localhost:3000` 启动开发服务器：
 
 ```bash
 # npm
@@ -38,9 +79,9 @@ yarn dev
 bun run dev
 ```
 
-## Production
+### 生产环境构建
 
-Build the application for production:
+构建生产环境应用：
 
 ```bash
 # npm
@@ -56,7 +97,7 @@ yarn build
 bun run build
 ```
 
-Locally preview production build:
+本地预览生产构建：
 
 ```bash
 # npm
@@ -72,4 +113,4 @@ yarn preview
 bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+查看 [部署文档](https://nuxt.com/docs/getting-started/deployment) 获取更多信息。
