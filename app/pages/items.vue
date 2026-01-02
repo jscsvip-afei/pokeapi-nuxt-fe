@@ -110,7 +110,7 @@ const searchText = ref('')
 const selectedCategory = ref('')
 
 // 模态框
-const itemDetailModalRef = ref<{ open: () => void } | null>(null)
+const itemDetailModalRef = ref<{ open: (itemId: number | string) => void } | null>(null)
 const selectedItem = ref<Item | null>(null)
 
 // 无限滚动
@@ -187,7 +187,7 @@ const loadMore = async () => {
 // 打开道具详情
 const openItemDetail = (item: Item) => {
   selectedItem.value = item
-  itemDetailModalRef.value?.open()
+  itemDetailModalRef.value?.open(item.name)
 }
 
 // 组件挂载
